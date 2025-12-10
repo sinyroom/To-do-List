@@ -19,6 +19,11 @@ export default function CreateTask({ onAdd }: Props) {
       return;
     }
 
+    if (!dueDate) {
+      setError('마감 일을 선택해주세요.');
+      return;
+    }
+
     if (trimmed.toLowerCase() === '에러상황') {
       setError('이 내용은 허용되지 않습니다.');
       return;
