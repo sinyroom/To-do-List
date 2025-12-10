@@ -21,10 +21,12 @@ export default function TaskListContainer({
   filter,
   onChangeStatus,
 }: Props) {
+  const normalize = (str: string) => str.replace(/\s+/g, '').toLowerCase();
+
   const filteredTasks = tasks.filter(
     (t) =>
       (filter === 'all' || t.status === filter) &&
-      t.title.toLowerCase().includes(search.toLowerCase())
+      normalize(t.title).includes(normalize(search))
   );
 
   const lists = [
