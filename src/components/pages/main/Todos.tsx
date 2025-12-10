@@ -2,6 +2,7 @@
 
 import type { Task } from '@/types/taskType';
 import DropdownList from './DropdownList';
+import { todoOptions } from '@/constants/dropdownOptions';
 
 type Props = {
   tasks: Task[];
@@ -26,6 +27,7 @@ export default function Todos({ tasks, onChangeStatus }: Props) {
                 className='flex items-center justify-between gap-1'
               >
                 <DropdownList
+                  options={todoOptions}
                   onChangeStatus={(status) => onChangeStatus(item.id, status)}
                 />
                 <div className='flex-1 min-w-0 rounded-md border border-gray-300 px-3 py-2'>

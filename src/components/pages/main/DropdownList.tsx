@@ -3,48 +3,52 @@
 import { useState } from 'react';
 import type { Task } from '@/types/taskType';
 
+export type Option = {
+  label: string;
+  value: Task['status'];
+};
+
 type Props = {
+  options: Option[];
   onChangeStatus: (status: Task['status']) => void;
 };
 
-export default function DropdownList({ onChangeStatus }: Props) {
+export default function DropdownList({ options, onChangeStatus }: Props) {
   const [open, setOpen] = useState(false);
+
+  const statusBgMap: Record<Option['value'], string> = {
+    todo: 'bg-gray-25',
+    doing: 'bg-green-100',
+    done: 'bg-red-100',
+  };
 
   return (
     <div className='relative'>
       <button
-        className='min-w-24 w-auto max-w-full rounded-full border border-gray-300 bg-white px-2 py-1 text-gray-700 hover:bg-gray-50'
+        className='flex-1 min-w-0 rounded-md border border-gray-300 px-3 py-2'
         onClick={() => setOpen((v) => !v)}
       >
-        상태 ▾
+        이동 ▾
       </button>
+
       {open && (
-        <ul
-          className='absolute left-1/2 -translate-x-1/2 z-10 mt-2 w-24 overflow-hidden rounded-md border border-gray-200 bg-white shadow-lg'
-          role='listbox'
-        >
-          <li role='option'>
-            <button
-              className='block w-full px-2 pt-2 pb-1 text-center text-sm hover:bg-gray-50 rounded-lg bg-green-300 text-green-900'
-              onClick={() => {
-                onChangeStatus('doing');
-                setOpen(false);
-              }}
-            >
-              진행 중
-            </button>
-          </li>
-          <li role='option'>
-            <button
-              className='block w-full px-2 py-2 text-center text-sm hover:bg-gray-50 rounded-lg bg-red-300 text-red-900 font-bold'
-              onClick={() => {
-                onChangeStatus('done');
-                setOpen(false);
-              }}
-            >
-              완료
-            </button>
-          </li>
+        <ul className='absolute left-1/2 -translate-x-1/2 z-10 mt-2 w-28 px-2 rounded-md border border-gray-200 bg-white shadow-lg'>
+          {options.map((opt) => {
+            const bgClass = statusBgMap[opt.value];
+            return (
+              <li key={opt.value} role='option'>
+                <button
+                  className={`block w-full my-2 text-center text-sm rounded-lg hover:bg-gray-100 ${bgClass}`}
+                  onClick={() => {
+                    onChangeStatus(opt.value);
+                    setOpen(false);
+                  }}
+                >
+                  {opt.label}
+                </button>
+              </li>
+            );
+          })}
         </ul>
       )}
     </div>

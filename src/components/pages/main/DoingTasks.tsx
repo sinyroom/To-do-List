@@ -1,12 +1,15 @@
 'use client';
 
 import type { Task } from '@/types/taskType';
+import DropdownList from './DropdownList';
+import { doingOptions } from '@/constants/dropdownOptions';
 
 type Props = {
   tasks: Task[];
+  onChangeStatus: (id: number, status: Task['status']) => void;
 };
 
-export default function DoingTasks({ tasks }: Props) {
+export default function DoingTasks({ tasks, onChangeStatus }: Props) {
   const doing = tasks.filter((t) => t.status === 'doing');
 
   return (
@@ -22,9 +25,16 @@ export default function DoingTasks({ tasks }: Props) {
             doing.map((item) => (
               <div
                 key={item.id}
-                className='list-disc list-inside rounded-md border bd-gray-25 px-3 py-2'
+                className='flex items-center justify-between gap-1'
               >
-                {item.title}
+                <DropdownList
+                  options={doingOptions}
+                  onChangeStatus={(status) => onChangeStatus(item.id, status)}
+                />
+
+                <div className='flex-1 min-w-0 rounded-md border border-gray-300 px-3 py-2 bg-green-50'>
+                  {item.title}
+                </div>
               </div>
             ))
           )}

@@ -10,8 +10,17 @@ import Todos from '@/components/pages/main/Todos';
 import { useState } from 'react';
 import type { Task } from '@/types/taskType';
 
+const initialMockTasks: Task[] = [
+  { id: 1, title: '리액트 강의 수강하기', status: 'todo' },
+  { id: 2, title: '15분 달리기', status: 'doing' },
+  { id: 3, title: '프론트엔드 이력서 수정', status: 'done' },
+  { id: 4, title: '필터 컴포넌트 UI 개선', status: 'doing' },
+  { id: 5, title: '가을여행 일정 확정하기', status: 'todo' },
+  { id: 6, title: 'Todo List 기능 완성', status: 'done' },
+];
+
 export default function Page() {
-  const [tasks, setTasks] = useState<Task[]>([]);
+  const [tasks, setTasks] = useState<Task[]>(initialMockTasks);
 
   const handleAddTask = (title: string) => {
     const trimmed = title.trim();
@@ -35,8 +44,8 @@ export default function Page() {
         <CreateTask onAdd={handleAddTask} />
         <Filter />
         <Todos tasks={tasks} onChangeStatus={handleChangeStatus} />
-        <DoingTasks tasks={tasks} />
-        <DoneTasks tasks={tasks} />
+        <DoingTasks tasks={tasks} onChangeStatus={handleChangeStatus} />
+        <DoneTasks tasks={tasks} onChangeStatus={handleChangeStatus} />
       </div>
     </main>
   );
