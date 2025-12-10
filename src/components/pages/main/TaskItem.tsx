@@ -17,14 +17,17 @@ export default function TaskItem({
   bgColor,
 }: Props) {
   return (
-    <div className={`flex items-center justify-between gap-1 ${bgColor || ''}`}>
+    <div className={`flex items-center justify-between gap-2 ${bgColor || ''}`}>
+      <div className='flex-1 min-w-0 border-b border-gray-300 px-3 py-2'>
+        {task.title}
+        {task.dueDate && (
+          <div className='text-sm text-gray-500 mt-1'>{task.dueDate} 까지</div>
+        )}
+      </div>
       <DropdownList
         options={options}
         onChangeStatus={(status) => onChangeStatus(task.id, status)}
       />
-      <div className='flex-1 min-w-0 rounded-md border border-gray-300 px-3 py-2'>
-        {task.title}
-      </div>
     </div>
   );
 }

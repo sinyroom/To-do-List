@@ -25,7 +25,7 @@ export default function DropdownList({ options, onChangeStatus }: Props) {
   return (
     <div className='relative'>
       <button
-        className='flex-1 min-w-0 rounded-md border border-gray-300 px-3 py-2'
+        className='min-w-0 rounded-2xl border bg-gray-50 px-3 py-2 text-12'
         onClick={() => setOpen((v) => !v)}
       >
         이동 ▾
