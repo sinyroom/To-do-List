@@ -42,15 +42,15 @@ export default function CreateTask({ onAdd }: Props) {
             onChange={(e) => setValue(e.target.value)}
           />
           <div className='flex gap-2'>
-            <h3 className='min-w-10 flex items-center justify-center font-bold text-12'>
-              마감일
-            </h3>
             <input
               type='date'
               value={dueDate}
               onChange={(e) => setDueDate(e.target.value)}
               className='flex-1 min-w-0 rounded-md border px-3 py-2'
             />
+            <h3 className='min-w-10 flex items-center justify-center font-bold text-13 text-gray-500'>
+              까지
+            </h3>
             <button
               className='shrink-0 rounded-md bg-primary-500 px-4 py-2 text-white hover:bg-blue-500'
               onClick={handleAdd}

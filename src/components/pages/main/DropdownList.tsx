@@ -10,10 +10,15 @@ export type Option = {
 
 type Props = {
   options: Option[];
+  selectedStatus: Task['status'];
   onChangeStatus: (status: Task['status']) => void;
 };
 
-export default function DropdownList({ options, onChangeStatus }: Props) {
+export default function DropdownList({
+  options,
+  selectedStatus,
+  onChangeStatus,
+}: Props) {
   const [open, setOpen] = useState(false);
 
   const statusBgMap: Record<Option['value'], string> = {
@@ -35,8 +40,9 @@ export default function DropdownList({ options, onChangeStatus }: Props) {
         <ul className='absolute left-1/2 -translate-x-1/2 z-10 mt-2 w-28 px-2 rounded-md border border-gray-200 bg-white shadow-lg'>
           {options.map((opt) => {
             const bgClass = statusBgMap[opt.value];
+            const isSelected = opt.value === selectedStatus;
             return (
-              <li key={opt.value} role='option'>
+              <li key={opt.value} role='option' aria-selected={isSelected}>
                 <button
                   className={`block w-full my-2 text-center text-sm rounded-lg hover:bg-gray-100 ${bgClass}`}
                   onClick={() => {

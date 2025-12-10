@@ -26,6 +26,7 @@ export default function TaskItem({
       </div>
       <DropdownList
         options={options}
+        selectedStatus={task.status}
         onChangeStatus={(status) => onChangeStatus(task.id, status)}
       />
     </div>
