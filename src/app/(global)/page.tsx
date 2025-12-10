@@ -7,7 +7,7 @@ import Filter from '@/components/pages/main/Filter';
 import SearchBar from '@/components/pages/main/SearchBar';
 import TaskStatus from '@/components/pages/main/TaskStatus';
 import Todos from '@/components/pages/main/Todos';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import type { Task } from '@/types/taskType';
 
 const initialMockTasks: Task[] = [
@@ -21,21 +21,11 @@ const initialMockTasks: Task[] = [
 
 export default function Page() {
   const [tasks, setTasks] = useState<Task[]>(initialMockTasks);
-  const [loading, setLoading] = useState(true);
   const [inputValue, setInputValue] = useState('');
   const [search, setSearch] = useState('');
   const [filter, setFilter] = useState<'all' | 'todo' | 'doing' | 'done'>(
     'all'
   );
-
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setTasks(initialMockTasks);
-      setLoading(false);
-    }, 1000);
-
-    return () => clearTimeout(timer);
-  }, []);
 
   const handleSearch = () => {
     setSearch(inputValue);
@@ -65,14 +55,6 @@ export default function Page() {
     { status: 'doing', Component: DoingTasks },
     { status: 'done', Component: DoneTasks },
   ];
-
-  if (loading) {
-    return (
-      <main className='flex min-h-screen justify-center items-center'>
-        <div className='text-gray-500 text-lg'>로딩 중...</div>
-      </main>
-    );
-  }
 
   return (
     <main className='flex min-h-screen justify-center p-6'>

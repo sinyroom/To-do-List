@@ -8,6 +8,25 @@ type Props = {
 
 export default function CreateTask({ onAdd }: Props) {
   const [value, setValue] = useState('');
+  const [error, setError] = useState('');
+
+  const handleAdd = () => {
+    const trimmed = value.trim();
+
+    if (!trimmed) {
+      setError('할일을 입력해주세요.');
+      return;
+    }
+
+    if (trimmed.toLowerCase() === '에러상황') {
+      setError('이 내용은 허용되지 않습니다.');
+      return;
+    }
+
+    onAdd(trimmed);
+    setValue('');
+    setError('');
+  };
 
   return (
     <div className='flex items-center justify-center'>
@@ -20,16 +39,15 @@ export default function CreateTask({ onAdd }: Props) {
             value={value}
             onChange={(e) => setValue(e.target.value)}
           />
+
           <button
             className='shrink-0 rounded-md bg-primary-500 px-4 py-2 text-white hover:bg-blue-500'
-            onClick={() => {
-              onAdd(value);
-              setValue('');
-            }}
+            onClick={handleAdd}
           >
             추가
           </button>
         </div>
+        {error && <div className='text-red-500 text-sm mt-2 pl-1'>{error}</div>}
       </div>
     </div>
   );
