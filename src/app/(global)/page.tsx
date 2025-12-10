@@ -21,8 +21,20 @@ const initialMockTasks: Task[] = [
 
 export default function Page() {
   const [tasks, setTasks] = useState<Task[]>(initialMockTasks);
+  const [inputValue, setInputValue] = useState('');
+  const [search, setSearch] = useState('');
   const [filter, setFilter] = useState<'all' | 'todo' | 'doing' | 'done'>(
     'all'
+  );
+
+  const handleSearch = () => {
+    setSearch(inputValue);
+  };
+
+  const searchedTasks = tasks.filter(
+    (t) =>
+      (filter === 'all' || t.status === filter) &&
+      t.title.toLowerCase().includes(search.toLowerCase())
   );
 
   const handleAddTask = (title: string) => {
@@ -45,10 +57,14 @@ export default function Page() {
   ];
 
   return (
-    <main className='flex min-h-screen items-center justify-center p-6'>
+    <main className='flex min-h-screen justify-center p-6'>
       <div className='flex flex-col gap-3 w-full max-w-md rounded-xl border bg-white p-6 shadow-sm'>
         <h1 className='text-2xl font-semibold'>Todo List</h1>
-        <SearchBar />
+        <SearchBar
+          value={inputValue}
+          onChange={setInputValue}
+          onSearch={handleSearch}
+        />
         <TaskStatus tasks={tasks} />
         <CreateTask onAdd={handleAddTask} />
         <Filter onChange={setFilter} />
@@ -57,7 +73,7 @@ export default function Page() {
           .map(({ status, Component }) => (
             <Component
               key={status}
-              tasks={tasks}
+              tasks={searchedTasks.filter((t) => t.status === status)}
               onChangeStatus={handleChangeStatus}
             />
           ))}

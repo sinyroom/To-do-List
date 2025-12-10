@@ -15,7 +15,7 @@ export default function Todos({ tasks, onChangeStatus }: Props) {
 
   return (
     <div className='flex items-center justify-center'>
-      <div className='w-full rounded-md bg-gray-25 px-4 py-2'>
+      <div className='w-full rounded-md border border-2 border-gray-700 px-4 py-2'>
         <div className='text-lg font-semibold'>Todos</div>
         <div className='mt-2 space-y-2'>
           {isEmpty ? (
