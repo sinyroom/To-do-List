@@ -3,7 +3,6 @@
 import CreateTask from '@/components/pages/main/CreateTask';
 import Filter from '@/components/pages/main/Filter';
 import SearchBar from '@/components/pages/main/SearchBar';
-import TaskStatus from '@/components/pages/main/TaskStatus';
 import { useState } from 'react';
 import type { Task } from '@/types/taskType';
 import TaskList from '@/components/pages/main/TaskList';
@@ -87,7 +86,6 @@ export default function Page() {
           onChange={setInputValue}
           onSearch={handleSearch}
         />
-        <TaskStatus tasks={tasks} />
         <CreateTask onAdd={handleAddTask} />
         <Filter onChange={setFilter} />
         {(filter === 'all' || filter === 'todo') &&
