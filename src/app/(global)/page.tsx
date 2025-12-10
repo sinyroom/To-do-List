@@ -90,35 +90,44 @@ export default function Page() {
         <TaskStatus tasks={tasks} />
         <CreateTask onAdd={handleAddTask} />
         <Filter onChange={setFilter} />
-        <TaskList
-          tasks={searchedTasks}
-          status='todo'
-          title='Todos'
-          options={todoOptions}
-          bgColor=''
-          borderColor='border-gray-700'
-          onChangeStatus={handleChangeStatus}
-        />
+        {(filter === 'all' || filter === 'todo') &&
+          searchedTasks.some((t) => t.status === 'todo') && (
+            <TaskList
+              tasks={searchedTasks.filter((t) => t.status === 'todo')}
+              status='todo'
+              title='Todos'
+              options={todoOptions}
+              bgColor=''
+              borderColor='border-gray-700'
+              onChangeStatus={handleChangeStatus}
+            />
+          )}
 
-        <TaskList
-          tasks={searchedTasks}
-          status='doing'
-          title='Doing Tasks'
-          options={doingOptions}
-          bgColor='bg-green-50'
-          borderColor='border-green-700'
-          onChangeStatus={handleChangeStatus}
-        />
+        {(filter === 'all' || filter === 'doing') &&
+          searchedTasks.some((t) => t.status === 'doing') && (
+            <TaskList
+              tasks={searchedTasks.filter((t) => t.status === 'doing')}
+              status='doing'
+              title='Doing Tasks'
+              options={doingOptions}
+              bgColor='bg-green-50'
+              borderColor='border-green-700'
+              onChangeStatus={handleChangeStatus}
+            />
+          )}
 
-        <TaskList
-          tasks={searchedTasks}
-          status='done'
-          title='Done Tasks'
-          options={doneOptions}
-          bgColor='bg-red-50'
-          borderColor='border-red-700'
-          onChangeStatus={handleChangeStatus}
-        />
+        {(filter === 'all' || filter === 'done') &&
+          searchedTasks.some((t) => t.status === 'done') && (
+            <TaskList
+              tasks={searchedTasks.filter((t) => t.status === 'done')}
+              status='done'
+              title='Done Tasks'
+              options={doneOptions}
+              bgColor='bg-red-50'
+              borderColor='border-red-700'
+              onChangeStatus={handleChangeStatus}
+            />
+          )}
       </div>
     </main>
   );
