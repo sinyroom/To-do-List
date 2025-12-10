@@ -29,6 +29,14 @@ export default function TaskListContainer({
       normalize(t.title).includes(normalize(search))
   );
 
+  if (filteredTasks.length === 0) {
+    return (
+      <div className='text-center text-gray-500 py-6'>
+        검색 결과가 없습니다.
+      </div>
+    );
+  }
+
   const lists = [
     {
       status: 'todo',
