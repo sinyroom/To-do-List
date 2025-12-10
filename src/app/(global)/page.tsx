@@ -21,6 +21,9 @@ const initialMockTasks: Task[] = [
 
 export default function Page() {
   const [tasks, setTasks] = useState<Task[]>(initialMockTasks);
+  const [filter, setFilter] = useState<'all' | 'todo' | 'doing' | 'done'>(
+    'all'
+  );
 
   const handleAddTask = (title: string) => {
     const trimmed = title.trim();
@@ -35,6 +38,12 @@ export default function Page() {
     setTasks((prev) => prev.map((t) => (t.id === id ? { ...t, status } : t)));
   };
 
+  const statusComponents = [
+    { status: 'todo', Component: Todos },
+    { status: 'doing', Component: DoingTasks },
+    { status: 'done', Component: DoneTasks },
+  ];
+
   return (
     <main className='flex min-h-screen items-center justify-center p-6'>
       <div className='flex flex-col gap-3 w-full max-w-md rounded-xl border bg-white p-6 shadow-sm'>
@@ -42,10 +51,16 @@ export default function Page() {
         <SearchBar />
         <TaskStatus tasks={tasks} />
         <CreateTask onAdd={handleAddTask} />
-        <Filter />
-        <Todos tasks={tasks} onChangeStatus={handleChangeStatus} />
-        <DoingTasks tasks={tasks} onChangeStatus={handleChangeStatus} />
-        <DoneTasks tasks={tasks} onChangeStatus={handleChangeStatus} />
+        <Filter onChange={setFilter} />
+        {statusComponents
+          .filter(({ status }) => filter === 'all' || filter === status)
+          .map(({ status, Component }) => (
+            <Component
+              key={status}
+              tasks={tasks}
+              onChangeStatus={handleChangeStatus}
+            />
+          ))}
       </div>
     </main>
   );

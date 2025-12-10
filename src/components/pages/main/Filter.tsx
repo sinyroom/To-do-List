@@ -2,7 +2,11 @@
 
 import { useState } from 'react';
 
-export default function Filter() {
+type Props = {
+  onChange: (filter: 'all' | 'todo' | 'doing' | 'done') => void;
+};
+
+export default function Filter({ onChange }: Props) {
   const [open, setOpen] = useState(false);
   const [filter, setFilter] = useState<'all' | 'todo' | 'doing' | 'done'>(
     'all'
@@ -13,6 +17,7 @@ export default function Filter() {
   const selectFilter = (value: 'all' | 'todo' | 'doing' | 'done') => {
     setFilter(value);
     setOpen(false);
+    onChange(value);
   };
 
   const labelMap = {
