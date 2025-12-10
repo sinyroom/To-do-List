@@ -12,6 +12,7 @@ type Props = {
   tasks: Task[];
   search: string;
   filter: 'all' | 'todo' | 'doing' | 'done';
+  sortOrder?: 'asc' | 'desc';
   onChangeStatus: (id: number, status: Task['status']) => void;
 };
 
@@ -19,6 +20,7 @@ export default function TaskListContainer({
   tasks,
   search,
   filter,
+  sortOrder = 'asc',
   onChangeStatus,
 }: Props) {
   const normalize = (str: string) => str.replace(/\s+/g, '').toLowerCase();
@@ -29,7 +31,20 @@ export default function TaskListContainer({
       normalize(t.title).includes(normalize(search))
   );
 
-  if (filteredTasks.length === 0) {
+const sortedTasks = [...filteredTasks].sort((a, b) => {
+  const aHasDue = Boolean(a.dueDate);
+  const bHasDue = Boolean(b.dueDate);
+  if (aHasDue !== bHasDue) {
+    return aHasDue ? -1 : 1;
+  }
+  if (!aHasDue && !bHasDue) return 0;
+  const aTime = new Date(a.dueDate!).getTime();
+  const bTime = new Date(b.dueDate!).getTime();
+  return sortOrder === 'asc' ? aTime - bTime : bTime - aTime;
+});
+
+
+  if (sortedTasks.length === 0) {
     return (
       <div className='text-center text-gray-500 py-6'>
         검색 결과가 없습니다.
@@ -64,7 +79,7 @@ export default function TaskListContainer({
   return (
     <>
       {lists.map((list) => {
-        const taskList = filteredTasks.filter((t) => t.status === list.status);
+        const taskList = sortedTasks.filter((t) => t.status === list.status);
         if (!taskList.length) return null;
         return (
           <TaskList

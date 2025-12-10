@@ -14,6 +14,7 @@ export default function Page() {
   const [filter, setFilter] = useState<'all' | 'todo' | 'doing' | 'done'>(
     'all'
   );
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
 
   const handleSearch = () => {
     setSearch(inputValue);
@@ -37,11 +38,12 @@ export default function Page() {
           onSearch={handleSearch}
         />{' '}
         <CreateTask onAdd={addTask} />
-        <Filter onChange={setFilter} />
+        <Filter onChange={setFilter} onChangeSort={setSortOrder} />
         <TaskListContainer
           tasks={tasks}
           search={search}
           filter={filter}
+          sortOrder={sortOrder}
           onChangeStatus={changeStatus}
         />
       </div>
