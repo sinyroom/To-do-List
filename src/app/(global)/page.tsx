@@ -1,45 +1,22 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import type { Task } from '@/types/taskType';
+import { useState } from 'react';
 import CreateTask from '@/components/pages/main/CreateTask';
 import Filter from '@/components/pages/main/Filter';
 import SearchBar from '@/components/pages/main/SearchBar';
 import TaskListContainer from '@/components/pages/main/TaskListContainer';
-import { initialMockTasks } from '@/constants/mockTasks';
+import { useTasks } from '@/hooks/useTask';
 
 export default function Page() {
-  const [tasks, setTasks] = useState<Task[]>(initialMockTasks);
-  const [loading, setLoading] = useState(true);
+  const { tasks, loading, addTask, changeStatus } = useTasks();
   const [search, setSearch] = useState('');
   const [inputValue, setInputValue] = useState('');
   const [filter, setFilter] = useState<'all' | 'todo' | 'doing' | 'done'>(
     'all'
   );
 
-  useEffect(() => {
-    const timer = setTimeout(() => {
-      setTasks(initialMockTasks);
-      setLoading(false);
-    }, 1000);
-    return () => clearTimeout(timer);
-  }, []);
-
   const handleSearch = () => {
     setSearch(inputValue);
-  };
-
-  const handleAddTask = (title: string, dueDate: string) => {
-    const trimmed = title.trim();
-    if (!trimmed) return;
-    setTasks((prev) => [
-      ...prev,
-      { id: Date.now(), title: trimmed, status: 'todo', dueDate },
-    ]);
-  };
-
-  const handleChangeStatus = (id: number, status: Task['status']) => {
-    setTasks((prev) => prev.map((t) => (t.id === id ? { ...t, status } : t)));
   };
 
   if (loading) {
@@ -59,13 +36,13 @@ export default function Page() {
           onChange={setInputValue}
           onSearch={handleSearch}
         />{' '}
-        <CreateTask onAdd={handleAddTask} />
+        <CreateTask onAdd={addTask} />
         <Filter onChange={setFilter} />
         <TaskListContainer
           tasks={tasks}
           search={search}
           filter={filter}
-          onChangeStatus={handleChangeStatus}
+          onChangeStatus={changeStatus}
         />
       </div>
     </main>
